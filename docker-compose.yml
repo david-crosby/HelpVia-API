@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      - DATABASE_TYPE=mysql
+      - MYSQL_DATABASE_URL=mysql+pymysql://helpvia_user:helpvia_password@db:3306/helpvia_db
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [helpvia-network]
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=helpvia_db
+      - MYSQL_USER=helpvia_user
+      - MYSQL_PASSWORD=helpvia_password
+    ports: ["3306:3306"]
+    volumes: [mysql-data:/var/lib/mysql]
+    networks: [helpvia-network]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  helpvia-network:
+volumes:
+  mysql-data:
