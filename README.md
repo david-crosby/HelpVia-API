@@ -64,6 +64,5 @@ docker-compose up -d
 ## Built by
 
 David Crosby (Bing)
-bing@bing-bong.co.uk
 
 Built with ❤️ using FastAPI and UV
